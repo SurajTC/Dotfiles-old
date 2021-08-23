@@ -1,2 +1,2 @@
-# copy all the scripts to "/usr/bin"
+copy all the scripts to "/usr/bin"
 
