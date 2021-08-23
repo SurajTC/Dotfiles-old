@@ -1,0 +1,76 @@
+conky.config = {
+  alignment = 'top_right',
+  xinerama_head = 1,
+
+  default_color = 'white',
+  default_outline_color = 'grey',
+  default_shade_color = 'black',
+
+  border_width = 0.5,
+  draw_borders = true,
+  draw_graph_borders = true,
+  draw_outline = false,
+  draw_shades = false,
+
+  use_xft = true,
+  
+  font = 'Noto Sans:size=12',
+  
+  gap_x = 30,
+  gap_y = 110,
+  maximum_width = 250,
+  minimum_height = 5,
+  minimum_width = 250,
+
+  background = true,
+  cpu_avg_samples = 4,
+  net_avg_samples = 2,
+  double_buffer = true,
+
+  out_to_console = false,
+  out_to_stderr = false,
+  extra_newline = false,
+  
+  own_window = true,
+  own_window_colour = '000000',
+  own_window_class = 'Conky',
+  own_window_argb_visual = true,
+  --own_window_argb_value = 0,
+  own_window_type = 'dock',
+  own_window_transparent = true,
+  own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+  
+  stippled_borders = 0,
+  
+  update_interval = 1,
+  
+  uppercase = false,
+  use_spacer = 'none',
+  show_graph_scale = false,
+  show_graph_range = false,
+
+}
+
+conky.text = [[
+  $alignc ${color darkgrey}S Y S T E M${color}
+  ${font}
+  $alignc ${font Noto Sans:size=20}${time %H : %M : %S}${font}
+  $alignc ${color darkgrey}${time %e} / ${time %m} / ${time %g}${color}
+
+  UPTIME ${color darkgrey}${hr 2}
+  ${alignr 10} ${color}$uptime
+  CPU ${color darkgrey}${hr 2}
+  $alignr$freq_g GHz $alignr ${color}$cpu % 
+  RAM ${color darkgrey}${hr 2}
+  $alignr$mem $alignr ${color}$memperc % 
+  CACHE ${color darkgrey}${hr 2}
+  $alignr$buffers $alignr ${color}$cached 
+
+  NETWORK ${color darkgrey}${hr 2}
+  $alignr U: ${upspeedf enp0s31f6}    D: ${color}${downspeedf enp0s31f6}
+
+  ROOT ${color darkgrey}${hr 2}
+  $alignr ${color}${fs_used /} 
+  HOME ${color darkgrey}${hr 2}
+  $alignr ${color}${fs_used /home}
+]]
