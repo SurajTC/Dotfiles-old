@@ -9,6 +9,7 @@ local awful = require("awful")
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
+local lain  = require("lain")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -57,7 +58,7 @@ myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
-   { "sleep", "systemctl suspend" },
+   { "hibernate", "systemctl hibernate" },
    { "poweroff", "systemctl poweroff" },
    { "quit", function() awesome.quit() end },
 }
@@ -86,11 +87,11 @@ tag.connect_signal("request::default_layouts", function()
         awful.layout.suit.fair.horizontal,
         awful.layout.suit.spiral,
         awful.layout.suit.spiral.dwindle,
-	awful.layout.suit.floating,
-        awful.layout.suit.max,
-        awful.layout.suit.max.fullscreen,
-        awful.layout.suit.magnifier,
         awful.layout.suit.corner.nw,
+	    awful.layout.suit.floating,
+        --awful.layout.suit.max,
+        --awful.layout.suit.max.fullscreen,
+        --awful.layout.suit.magnifier,
     })
 end)
 -- }}}
@@ -173,6 +174,33 @@ screen.connect_signal("request::desktop_decoration", function(s)
             awful.button({ }, 5, function() awful.client.focus.byidx( 1) end),
         },
     }
+    -- Systray
+    s.systray = wibox.widget.systray()
+    s.systray.visible = false
+
+    -- cpu info
+    -- local cpu = lain.widget.cpu({
+    --     settings = function()
+    --         widget:set_markup(markup.fontfg(theme.font, "#e33a6e", cpu_now.usage .. "% "))
+    --     end
+    -- })
+    local cpu = lain.widget.cpu ({
+        settings = function()
+            widget:set_markup("CPU: " .. cpu_now.usage .. "% ")
+        end
+    })
+    -- RAM used
+    local memory = lain.widget.mem({
+        settings = function()
+            widget:set_markup("RAM: " .. mem_now.used .. "M | ")
+        end
+    })
+    -- Download speed
+    local netdown = lain.widget.net({
+        settings = function()
+            widget:set_markup("Down: ".. net_now.received .. "K | ")
+        end
+    })
 
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
@@ -185,12 +213,16 @@ screen.connect_signal("request::desktop_decoration", function(s)
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
+            
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-           mykeyboardlayout,
-            wibox.widget.systray(),
+            netdown.widget,
+            memory.widget,
+            cpu.widget,
+            mykeyboardlayout,
+            s.systray,
             mytextclock,
             s.mylayoutbox,
         },
@@ -239,6 +271,8 @@ awful.keyboard.append_global_keybindings({
               {description = "run thunar", group = "launcher"}),
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey , "Control"}, "l", function() awful.util.spawn("dm-tool lock") end,
+              {description = "lock screen", group = "launcher"}),
 })
 
 -- Tags related keybindings
@@ -502,6 +536,8 @@ end)
 
 -- {{{ Titlebars
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
+
+--[[
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
     local buttons = {
@@ -538,6 +574,7 @@ client.connect_signal("request::titlebars", function(c)
         layout = wibox.layout.align.horizontal
     }
 end)
+]]
 
 -- {{{ Notifications
 
@@ -562,6 +599,10 @@ end)
 --client.connect_signal("mouse::enter", function(c)
 --    c:activate { context = "mouse_enter", raise = false }
 --end)
+
+-- awful.key({ modkey }, "=", function ()
+--     awful.screen.focused().systray.visible = not awful.screen.focused().systray.visible
+--     end, {description = "Toggle systray visibility", group = "custom"})
 
 -- Autorun programs
 autorun = true

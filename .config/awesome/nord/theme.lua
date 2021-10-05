@@ -82,7 +82,7 @@ theme.menu_width  = dpi(100)
 theme.taglist_squares_sel   = themes_path .. "nord/taglist/squarefz.png"
 theme.taglist_squares_unsel = themes_path .. "nord/taglist/squarez.png"
 
-theme.taglist_spacing = 4
+theme.taglist_spacing = 6
 --theme.taglist_squares_resize = "false"
 -- }}}
 
