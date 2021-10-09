@@ -3,4 +3,4 @@
 
 * WM : AwesomeWM
 * Terminal : Alacritty
-* OS : Manjaro (XFCE)
+* OS : Arch Linux
