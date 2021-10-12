@@ -3,4 +3,4 @@
 
 * WM : AwesomeWM
 * Terminal : Alacritty
-* OS : Arch Linux
+* Platform : Arch Linux (or any Arch based distro)
