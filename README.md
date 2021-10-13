@@ -1,5 +1,6 @@
 # Dotfiles
 
+Specifications :
 
 * WM : AwesomeWM
 * Terminal : Alacritty
